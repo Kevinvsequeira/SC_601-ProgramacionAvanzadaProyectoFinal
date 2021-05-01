@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="masterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="idNum" />
+    </Key>
+    <Property Name="idNum" Type="Int32" Nullable="false" />
+    <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="registerDate" Type="DateTime" Precision="3" />
+    <Property Name="birthDate" Type="DateTime" Precision="3" />
+    <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="UserCred" Relationship="Self.FK__UserCreds__idNum__1BB31344" FromRole="Person" ToRole="UserCreds" />
+  </EntityType>
+  <EntityType Name="ScheduleList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="username" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Schedule">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="duration" Type="Int32" />
+    <Property Name="capacity" Type="Int32" />
+  </EntityType>
+  <EntityType Name="UserCred">
+    <Key>
+      <PropertyRef Name="idNum" />
+    </Key>
+    <Property Name="idNum" Type="Int32" Nullable="false" />
+    <Property Name="username" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="role" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Person" Relationship="Self.FK__UserCreds__idNum__1BB31344" FromRole="UserCreds" ToRole="Person" />
+  </EntityType>
+  <Association Name="FK__UserCreds__idNum__1BB31344">
+    <End Role="Person" Type="Self.Person" Multiplicity="1" />
+    <End Role="UserCreds" Type="Self.UserCred" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="idNum" />
+      </Principal>
+      <Dependent Role="UserCreds">
+        <PropertyRef Name="idNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="masterEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="People" EntityType="Self.Person" />
+    <EntitySet Name="ScheduleLists" EntityType="Self.ScheduleList" />
+    <EntitySet Name="Schedules" EntityType="Self.Schedule" />
+    <EntitySet Name="UserCreds" EntityType="Self.UserCred" />
+    <AssociationSet Name="FK__UserCreds__idNum__1BB31344" Association="Self.FK__UserCreds__idNum__1BB31344">
+      <End Role="Person" EntitySet="People" />
+      <End Role="UserCreds" EntitySet="UserCreds" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

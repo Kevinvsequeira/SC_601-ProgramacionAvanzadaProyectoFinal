@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Gym X";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Session["userid"] == null)
+    {
+        Response.Redirect("~/login/index");
+    }
+    if (Session["role"].ToString() == "U")
+    {
+        Layout = "~/views/shared/_menuClient.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "E")
+    {
+        Layout = "~/views/shared/_menuEmployee.cshtml";
+    }else
+    if (Session["role"].ToString() == "A")
+    {
+        Layout = "~/views/shared/_menuAdmin.cshtml";
+    }
+}
+<body background="~/Content/Images/bg2.jpg" background-size: 100%>
+    <div class="jumbotron">
+        <h1>Bivenvenido al GYM X </h1>
+    </div>
+</body>

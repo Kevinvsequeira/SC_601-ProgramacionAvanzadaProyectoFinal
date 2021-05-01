@@ -1,0 +1,106 @@
+﻿@model IPagedList<SC_601_Project.Models.Person>
+
+@{
+    if (Session["userid"] == null)
+    {
+        Response.Redirect("~/login/index");
+    }
+    if (Session["role"].ToString() == "U")
+    {
+        Layout = "~/views/shared/_menuClient.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "E")
+    {
+        Layout = "~/views/shared/_menuEmployee.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "A")
+    {
+        Layout = "~/views/shared/_menuAdmin.cshtml";
+    }
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Listado Personas</title>
+</head>
+<body>
+    </br></br>
+    <p>
+        <h3> @Html.ActionLink("Añadir", "Create", "", new { @class = "btn btn-sm btn-success" }) </h3>
+    </p>
+    <p>
+        @using (Html.BeginForm("Index", "Person", FormMethod.Get))
+        {
+            <input type="text" name="search" placeholder="Digite nombre.." />
+            <input type="submit" name="submit" value="Buscar" class="btn btn-sm btn-primary" />
+            <input type="submit" name="submit" value="Limpiar" class="btn btn-sm btn-primary" />
+        }
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().idNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().first_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().last_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().registerDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().birthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().phone)
+            </th>
+            <th>
+                Acciones
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idNum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.first_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.last_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.registerDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.birthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phone)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.idNum }, new { @class = "btn btn-sm btn-info" }) |
+                    @Html.ActionLink("Detalles", "Details", new { id = item.idNum }, new { @class = "btn btn-sm btn-primary" }) |
+                    @Html.ActionLink("Borrar", "Delete", new { id = item.idNum }, new { @class = "btn btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
+
+    </table>
+    @Html.PagedListPager(Model, i => Url.Action("Index", "Person", new { i, search = Request.QueryString["search"] }))
+</body>
+<hr>
+<label>Total: </label> @ViewBag.TotalPersonas
+</html>

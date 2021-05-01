@@ -1,0 +1,82 @@
+﻿@model IPagedList<SC_601_Project.Models.ScheduleList>
+
+@{
+    if (Session["userid"] == null)
+    {
+        Response.Redirect("~/login/index");
+    }
+    if (Session["role"].ToString() == "U")
+    {
+        Layout = "~/views/shared/_menuClient.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "E")
+    {
+        Layout = "~/views/shared/_menuEmployee.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "A")
+    {
+        Layout = "~/views/shared/_menuAdmin.cshtml";
+    }
+    List<SelectListItem> times = (List<SelectListItem>)ViewBag.times;
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Citas</title>
+</head>
+<body>
+    </br></br>
+    <p>
+        <h3> </h3>
+    </p>
+    <b>Filtrar por hora:</b>
+    <p>
+        @using (Html.BeginForm("Index", "ScheduleList", FormMethod.Get))
+        {
+            @Html.DropDownList("search", times, htmlAttributes: new { @class = "form-control", @name = "search" })
+            @Html.ActionLink("Añadir", "Create", "", new { @class = "btn btn-sm btn-success" })
+            <input type="submit" name="submit" value="Buscar" class="btn btn-sm btn-primary" />
+            @Html.ActionLink("Limpiar", "Index", null, new { @class = "btn btn-sm btn-primary" })
+
+        }
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().time)
+            </th>
+            <th>Acciones</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.time)
+                </td>
+                <td>
+                    @Html.ActionLink("Detalles", "Details", new { id = item.id }, new { @class = "btn btn-sm btn-primary" }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.id }, new { @class = "btn btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
+
+    </table>
+    @Html.PagedListPager(Model, i => Url.Action("Index", "ScheduleList", new { i, search = Request.QueryString["search"] }))
+</body>
+<label>Total: </label> @ViewBag.TotalSch
+</html>

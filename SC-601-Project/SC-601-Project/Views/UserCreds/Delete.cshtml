@@ -1,0 +1,82 @@
+﻿@model SC_601_Project.Models.UserCred
+
+@{
+    if (Session["userid"] == null)
+    {
+        Response.Redirect("~/login/index");
+    }
+    if (Session["role"].ToString() == "U")
+    {
+        Layout = "~/views/shared/_menuClient.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "E")
+    {
+        Layout = "~/views/shared/_menuEmployee.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "A")
+    {
+        Layout = "~/views/shared/_menuAdmin.cshtml";
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Eliminar</title>
+</head>
+<body>
+    <h3>Está seguro de que desea eliminar el registro?</h3>
+    <br />
+    <div>
+        <h4>Credenciales Usuario</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.username)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.username)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.status)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.status)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.role)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.role)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Person.first_name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Person.first_name)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value="Eliminar" class="btn btn-sm btn-danger" /> |
+                @Html.ActionLink("Regresar", "Index", "", new { @class = "btn btn-sm btn-primary" })
+            </div>
+        }
+    </div>
+</body>
+</html>

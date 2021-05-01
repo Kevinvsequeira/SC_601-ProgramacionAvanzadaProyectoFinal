@@ -1,0 +1,91 @@
+drop table ScheduleList;
+drop table Schedules;
+drop table UserCreds;
+drop table Person;
+
+delete from ScheduleList;
+delete from Schedules;
+delete from UserCreds;
+delete from Person;
+
+select * from ScheduleList;
+select * from Schedules;
+select * from UserCreds;
+select * from Person;
+
+CREATE TABLE Person (
+    idNum INT PRIMARY KEY,
+    first_name VARCHAR (50) NOT NULL,
+    last_name VARCHAR (50) NOT NULL,
+    registerDate DATETIME,
+	birthDate DATETIME,
+    phone VARCHAR(20),
+);
+
+insert into Person (idNum, first_name, last_name, registerDate, birthDate, phone)
+values
+(11111, 'Kevin', 'Villarreal', '20210725', '19980117','87303625'),
+(22222, 'Bryan', 'Villarreal', '20211225', '19880117', '84219092'),
+(33333, 'Priscilla', 'Sequeira', '20210925', '19870117', '87120887'),
+(44444, 'Eugenia', 'Sequeira', '20210625', '19680117', '84029304'),
+(55555, 'Uriel', 'Villarreal', '20210325', '19580117', '84274827'),
+(66666, 'Aaron', 'Zamora', '20210115', '19540117', '84241232'),
+(77777, 'María', 'Sánchez', '20210705', '19340117', '87123552'),
+(88888, 'Jenny', 'Rodríguez', '20210913','19750117', '82054364'),
+(99999, 'Dua', 'Lipa', '20210717', '19660117', '88235264'),
+(12345, 'Jerry', 'Gomez', '20210409', '19930117', '84637821'),
+(54321, 'Johanna', 'Campbell', '20210322', '19930518', '84637821');
+
+CREATE TABLE UserCreds (
+    idNum INT PRIMARY KEY,
+	username VARCHAR (15) NOT NULL,
+	password VARCHAR (15) NOT NULL,
+	status VARCHAR (10) NOT NULL,
+	role VARCHAR(10),
+	FOREIGN KEY (idNum) REFERENCES Person (idNum)
+);
+insert into UserCreds (idNum, username, password,status, role)
+values
+(11111, 'kevinv', 'root', 'Enabled', 'A'),
+(22222, 'bryanv', 'root', 'Disabled', 'U'),
+(33333, 'priscillas', 'root', 'Disabled', 'E'),
+(44444, 'eugenias', 'root', 'Disabled', 'E'),
+(55555, 'urielv', 'root', 'Disabled', 'E'),
+(66666, 'aaronz', 'root', 'Enabled', 'U'),
+(77777, 'marias', 'root', 'Disabled', 'U'),
+(88888, 'jennyr', 'root', 'Disabled', 'U'),
+(99999, 'dual', 'root', 'Disabled', 'U'),
+(12345, 'jerryg', 'root', 'Disabled', 'U'),
+(54321, 'johannac', 'root', 'Disabled', 'U');
+
+CREATE TABLE Schedules (
+	time VARCHAR(10) PRIMARY KEY,
+	duration INT,
+	capacity INT
+);
+
+insert into Schedules (time, duration, capacity)
+values
+('05:00',120,1),
+('07:15',120,1),
+('09:30',120,5),
+('11:45',90,5),
+('13:30',90,5),
+('15:15',100,5),
+('17:30',120,5),
+('19:45',90,5)
+
+CREATE TABLE ScheduleList (
+    id INT PRIMARY KEY IDENTITY (1, 1),
+	time VARCHAR(10),
+	username VARCHAR(15),
+	FOREIGN KEY (time) REFERENCES Schedules (time),
+);
+insert into ScheduleList (time, username)
+values
+('05:00','aaronz'),
+('07:15','marias'),
+('07:15','jennyr'),
+('09:30','dual'),
+('09:30','jerryg'),
+('09:30','johannac')

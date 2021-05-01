@@ -1,0 +1,59 @@
+﻿@model SC_601_Project.Models.ScheduleList
+
+@{
+    if (Session["userid"] == null)
+    {
+        Response.Redirect("~/login/index");
+    }
+    if (Session["role"].ToString() == "U")
+    {
+        Layout = "~/views/shared/_menuClient.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "E")
+    {
+        Layout = "~/views/shared/_menuEmployee.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "A")
+    {
+        Layout = "~/views/shared/_menuAdmin.cshtml";
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Detalles</title>
+</head>
+<body>
+    <br />  
+    <div>
+        <h4>Cita</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.username)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.username)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.time)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.time)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Regresar", "Index", "", new { @class = "btn btn-sm btn-primary" })
+    </p>
+</body>
+</html>

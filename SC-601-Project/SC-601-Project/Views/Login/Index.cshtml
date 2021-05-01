@@ -1,0 +1,76 @@
+﻿@model SC_601_Project.Models.UserCred
+
+@{
+    Layout = "~/Views/Shared/_menuLogin.cshtml";
+    List<SelectListItem> times = (List<SelectListItem>)ViewBag.times;
+}
+
+<head>
+    <style>
+        #login-div {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            border: 1px solid #ccc;
+            padding: 10px 10px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+</head>
+<body background="~/Content/Images/bg2.jpg" background-size: 100%>
+    <div id="login-div">
+        @using (Html.BeginForm("Autherize", "Login", FormMethod.Post))
+        {
+            <table style="        background-color: #f2f2f2">
+                <tr>
+                    <td></td>
+                    <td style="text-decoration: underline; color:black"><h2>Gym X</h2></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.username, new { @style = "color:black;" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.username, new { @style = "color:black;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> @Html.ValidationMessageFor(model => model.username) </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.LabelFor(model => model.password) </td>
+                    <td> @Html.EditorFor(model => model.password) </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> @Html.ValidationMessageFor(model => model.password) </td>
+                </tr>
+
+                <tr>
+                    <td colspan= ="2">
+                        <label class="field-validation-error">@Html.DisplayFor(model => model.LoginErrorMessage)</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td> </td>
+                    <td>
+                        <input type="submit" name="name" value="Login" class = "btn btn-sm btn-success"/>
+                        <input type="reset" name="name" value="Clear" class = "btn btn-sm btn-primary"/>
+                    </td>
+                </tr>
+
+            </table>
+        }
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+

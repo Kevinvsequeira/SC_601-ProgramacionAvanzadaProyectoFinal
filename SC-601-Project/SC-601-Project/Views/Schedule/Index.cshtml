@@ -1,0 +1,76 @@
+﻿@model IPagedList<SC_601_Project.Models.Schedule>
+
+@{
+    if (Session["userid"] == null)
+    {
+        Response.Redirect("~/login/index");
+    }
+    if (Session["role"].ToString() == "U")
+    {
+        Layout = "~/views/shared/_menuClient.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "E")
+    {
+        Layout = "~/views/shared/_menuEmployee.cshtml";
+    }
+    else
+    if (Session["role"].ToString() == "A")
+    {
+        Layout = "~/views/shared/_menuAdmin.cshtml";
+    }
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Horarios</title>
+</head>
+<body>
+    <p>
+        <h3> @Html.ActionLink("Añadir", "Create", "", new { @class = "btn btn-sm btn-success" }) </h3>
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().capacity)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.capacity)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.id }, new { @class = "btn btn-sm btn-info" }) |
+                    @Html.ActionLink("Detalles", "Details", new { id = item.id }, new { @class = "btn btn-sm btn-primary" }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.id }, new { @class = "btn btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
+
+    </table>
+    @Html.PagedListPager(Model, i => Url.Action("Index", "Schedule", new { i, search = Request.QueryString["search"] }))
+</body>
+<label>Total: </label> @ViewBag.schTotal
+</html>

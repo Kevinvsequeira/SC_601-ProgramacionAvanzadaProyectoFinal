@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="masterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="idNum" />
+    </Key>
+    <Property Name="idNum" Type="int" Nullable="false" />
+    <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="last_name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="registerDate" Type="datetime" />
+    <Property Name="birthDate" Type="datetime" />
+    <Property Name="phone" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="ScheduleList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="time" Type="varchar" MaxLength="10" />
+    <Property Name="username" Type="varchar" MaxLength="15" />
+  </EntityType>
+  <EntityType Name="Schedules">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="time" Type="varchar" MaxLength="10" />
+    <Property Name="duration" Type="int" />
+    <Property Name="capacity" Type="int" />
+  </EntityType>
+  <EntityType Name="UserCreds">
+    <Key>
+      <PropertyRef Name="idNum" />
+    </Key>
+    <Property Name="idNum" Type="int" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="role" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6035: The relationship 'FK__ScheduleLi__time__216BEC9A' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK__ScheduleLi__time__216BEC9A" />-->
+  <Association Name="FK__UserCreds__idNum__1BB31344">
+    <End Role="Person" Type="Self.Person" Multiplicity="1" />
+    <End Role="UserCreds" Type="Self.UserCreds" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="idNum" />
+      </Principal>
+      <Dependent Role="UserCreds">
+        <PropertyRef Name="idNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="masterModelStoreContainer">
+    <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ScheduleList" EntityType="Self.ScheduleList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Schedules" EntityType="Self.Schedules" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserCreds" EntityType="Self.UserCreds" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__UserCreds__idNum__1BB31344" Association="Self.FK__UserCreds__idNum__1BB31344">
+      <End Role="Person" EntitySet="Person" />
+      <End Role="UserCreds" EntitySet="UserCreds" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
